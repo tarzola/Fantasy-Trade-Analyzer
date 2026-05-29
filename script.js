@@ -11,7 +11,7 @@ try {
 
 ```
     const leagueResponse = await fetch(
-        'https://api.sleeper.app/v1/league/${leagueId}'
+        `https://api.sleeper.app/v1/league/${leagueId}`
     );
 
     const usersResponse = await fetch(
@@ -54,14 +54,12 @@ leagueInfo.innerHTML = `
 function displayRosters(rosters, users) {
 
 ```
-const container =
-    document.getElementById("rostersContainer");
+const container = document.getElementById("rostersContainer");
 
 container.innerHTML = "";
 
 rosters.forEach(roster => {
 
-    // DEBUG: inspect the full roster object
     console.log("ROSTER OBJECT:");
     console.log(roster);
 
