@@ -1,3 +1,4 @@
+console.log("script loaded");
 const leagueId = "1242708409250226176";
 
 document
