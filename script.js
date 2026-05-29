@@ -10,6 +10,10 @@ document
 .getElementById("loadLeagueBtn")
 .addEventListener("click", loadLeagueData);
 
+document
+.getElementById("analyzeTradeBtn")
+.addEventListener("click", analyzeTrade);
+
 async function loadLeagueData() {
 
 try {
@@ -29,14 +33,7 @@ try {
     const playersResponse = await fetch(
         "https://api.sleeper.app/v1/players/nba"
     );
-    const tradedPicksResponse = await fetch(
-    `https://api.sleeper.app/v1/league/${leagueId}/traded_picks`
-);
 
-const tradedPicks = await tradedPicksResponse.json();
-
-console.log("TRADED PICKS");
-console.log(tradedPicks);
     const league = await leagueResponse.json();
     const users = await usersResponse.json();
     const rosters = await rostersResponse.json();
@@ -47,7 +44,6 @@ console.log(tradedPicks);
     globalPlayers = players;
 
     displayLeagueInfo(league);
-    
     populateTeamDropdowns();
 
 } catch (error) {
@@ -68,61 +64,6 @@ leagueInfo.innerHTML = `
     <p>Season: ${league.season}</p>
     <p>Teams: ${league.total_rosters}</p>
 `;
-
-}
-
-function displayRosters(rosters, users, players) {
-
-const container = document.getElementById("rostersContainer");
-
-container.innerHTML = "";
-
-rosters.forEach(roster => {
-
-    const owner = users.find(
-        user => user.user_id === roster.owner_id
-    );
-
-    const ownerName =
-        owner?.metadata?.team_name ||
-        owner?.display_name ||
-        "Unknown Owner";
-
-    const card = document.createElement("div");
-
-    card.classList.add("roster-card");
-
-    let playerNames = "";
-
-    if (roster.players) {
-
-        roster.players.slice(0, 10).forEach(playerId => {
-
-            const player = players[playerId];
-
-            const playerName =
-                player?.full_name ||
-                `Unknown (${playerId})`;
-
-            playerNames += `${playerName}<br>`;
-
-        });
-
-    }
-
-    card.innerHTML = `
-        <h3>${ownerName}</h3>
-        <p>Players: ${roster.players?.length || 0}</p>
-
-        <div class="player-list">
-            <strong>First 10 Players:</strong><br>
-            ${playerNames}
-        </div>
-    `;
-
-    container.appendChild(card);
-
-});
 
 }
 
@@ -170,7 +111,8 @@ function displayTeamARoster() {
 
 displaySelectedRoster(
     document.getElementById("teamASelect").value,
-    document.getElementById("teamARoster")
+    document.getElementById("teamARoster"),
+    "teamA"
 );
 
 }
@@ -179,12 +121,13 @@ function displayTeamBRoster() {
 
 displaySelectedRoster(
     document.getElementById("teamBSelect").value,
-    document.getElementById("teamBRoster")
+    document.getElementById("teamBRoster"),
+    "teamB"
 );
 
 }
 
-function displaySelectedRoster(rosterId, targetDiv) {
+function displaySelectedRoster(rosterId, targetDiv, prefix) {
 
 const roster = globalRosters.find(
     r => r.roster_id == rosterId
@@ -211,8 +154,10 @@ roster.players.forEach(playerId => {
     html += `
         <div class="player-checkbox">
             <label>
-                <input type="checkbox"
-                       value="${playerName}">
+                <input
+                    type="checkbox"
+                    class="${prefix}-asset"
+                    value="${playerName}">
                 ${playerName}
             </label>
         </div>
@@ -221,5 +166,52 @@ roster.players.forEach(playerId => {
 });
 
 targetDiv.innerHTML = html;
+
+}
+
+function analyzeTrade() {
+
+const teamAAssets =
+    document.querySelectorAll(".teamA-asset:checked");
+
+const teamBAssets =
+    document.querySelectorAll(".teamB-asset:checked");
+
+let teamAList = "";
+let teamBList = "";
+
+teamAAssets.forEach(asset => {
+
+    teamAList += `<li>${asset.value}</li>`;
+
+});
+
+teamBAssets.forEach(asset => {
+
+    teamBList += `<li>${asset.value}</li>`;
+
+});
+
+document.getElementById("tradeResults").innerHTML = `
+    <h3>Trade Summary</h3>
+
+    <div style="display:flex; gap:40px;">
+
+        <div>
+            <h4>Team A Gives</h4>
+            <ul>
+                ${teamAList || "<li>Nothing Selected</li>"}
+            </ul>
+        </div>
+
+        <div>
+            <h4>Team B Gives</h4>
+            <ul>
+                ${teamBList || "<li>Nothing Selected</li>"}
+            </ul>
+        </div>
+
+    </div>
+`;
 
 }
