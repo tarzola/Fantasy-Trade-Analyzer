@@ -59,7 +59,7 @@ function displayRosters(rosters, users) {
         );
 
         // Debug output
-        console.log(owner);
+       // console.log(owner);
 
         const ownerName =
             owner?.metadata?.team_name ||
