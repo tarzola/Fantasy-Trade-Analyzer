@@ -2,11 +2,16 @@ console.log("script loaded");
 
 const leagueId = "1242708409250226176";
 
+let globalRosters = [];
+let globalUsers = [];
+let globalPlayers = {};
+
 document
 .getElementById("loadLeagueBtn")
 .addEventListener("click", loadLeagueData);
 
 async function loadLeagueData() {
+
 try {
 
     const leagueResponse = await fetch(
@@ -21,7 +26,6 @@ try {
         `https://api.sleeper.app/v1/league/${leagueId}/rosters`
     );
 
-    // Load Sleeper NBA player database
     const playersResponse = await fetch(
         "https://api.sleeper.app/v1/players/nba"
     );
@@ -31,12 +35,20 @@ try {
     const rosters = await rostersResponse.json();
     const players = await playersResponse.json();
 
+    globalRosters = rosters;
+    globalUsers = users;
+    globalPlayers = players;
+
     displayLeagueInfo(league);
     displayRosters(rosters, users, players);
 
+    populateTeamDropdowns();
+
 } catch (error) {
+
     console.error(error);
     alert("Error loading league.");
+
 }
 
 }
@@ -87,6 +99,7 @@ rosters.forEach(roster => {
                 `Unknown (${playerId})`;
 
             playerNames += `${playerName}<br>`;
+
         });
 
     }
@@ -102,6 +115,105 @@ rosters.forEach(roster => {
     `;
 
     container.appendChild(card);
+
 });
+
+}
+
+function populateTeamDropdowns() {
+
+const teamASelect = document.getElementById("teamASelect");
+const teamBSelect = document.getElementById("teamBSelect");
+
+teamASelect.innerHTML =
+    '<option value="">Select Team</option>';
+
+teamBSelect.innerHTML =
+    '<option value="">Select Team</option>';
+
+globalRosters.forEach(roster => {
+
+    const owner = globalUsers.find(
+        user => user.user_id === roster.owner_id
+    );
+
+    const teamName =
+        owner?.metadata?.team_name ||
+        owner?.display_name ||
+        "Unknown Team";
+
+    const optionA = document.createElement("option");
+    optionA.value = roster.roster_id;
+    optionA.textContent = teamName;
+
+    const optionB = document.createElement("option");
+    optionB.value = roster.roster_id;
+    optionB.textContent = teamName;
+
+    teamASelect.appendChild(optionA);
+    teamBSelect.appendChild(optionB);
+
+});
+
+teamASelect.addEventListener("change", displayTeamARoster);
+teamBSelect.addEventListener("change", displayTeamBRoster);
+
+}
+
+function displayTeamARoster() {
+
+displaySelectedRoster(
+    document.getElementById("teamASelect").value,
+    document.getElementById("teamARoster")
+);
+
+}
+
+function displayTeamBRoster() {
+
+displaySelectedRoster(
+    document.getElementById("teamBSelect").value,
+    document.getElementById("teamBRoster")
+);
+
+}
+
+function displaySelectedRoster(rosterId, targetDiv) {
+
+const roster = globalRosters.find(
+    r => r.roster_id == rosterId
+);
+
+if (!roster) {
+
+    targetDiv.innerHTML = "";
+    return;
+
+}
+
+let html = "";
+
+roster.players.forEach(playerId => {
+
+    const player =
+        globalPlayers[playerId];
+
+    const playerName =
+        player?.full_name ||
+        `Unknown (${playerId})`;
+
+    html += `
+        <div class="player-checkbox">
+            <label>
+                <input type="checkbox"
+                       value="${playerName}">
+                ${playerName}
+            </label>
+        </div>
+    `;
+
+});
+
+targetDiv.innerHTML = html;
 
 }
