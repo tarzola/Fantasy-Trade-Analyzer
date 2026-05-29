@@ -9,7 +9,6 @@ document
 async function loadLeagueData() {
 try {
 
-```
     const leagueResponse = await fetch(
         `https://api.sleeper.app/v1/league/${leagueId}`
     );
@@ -33,13 +32,11 @@ try {
     console.error(error);
     alert("Error loading league.");
 }
-```
 
 }
 
 function displayLeagueInfo(league) {
 
-```
 const leagueInfo = document.getElementById("leagueInfo");
 
 leagueInfo.innerHTML = `
@@ -47,13 +44,11 @@ leagueInfo.innerHTML = `
     <p>Season: ${league.season}</p>
     <p>Teams: ${league.total_rosters}</p>
 `;
-```
 
 }
 
 function displayRosters(rosters, users) {
 
-```
 const container = document.getElementById("rostersContainer");
 
 container.innerHTML = "";
@@ -92,6 +87,5 @@ rosters.forEach(roster => {
 
     container.appendChild(card);
 });
-```
 
 }
