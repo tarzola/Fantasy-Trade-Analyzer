@@ -1,4 +1,5 @@
 console.log("script loaded");
+
 const leagueId = "1242708409250226176";
 
 document
@@ -26,13 +27,13 @@ async function loadLeagueData() {
 
         displayLeagueInfo(league);
         displayRosters(rosters, users);
-        console.log(owner);
 
     } catch (error) {
         console.error(error);
         alert("Error loading league.");
     }
 }
+
 function displayLeagueInfo(league) {
 
     const leagueInfo = document.getElementById("leagueInfo");
@@ -43,6 +44,7 @@ function displayLeagueInfo(league) {
         <p>Teams: ${league.total_rosters}</p>
     `;
 }
+
 function displayRosters(rosters, users) {
 
     const container =
@@ -56,8 +58,13 @@ function displayRosters(rosters, users) {
             user => user.user_id === roster.owner_id
         );
 
+        // Debug output
+        console.log(owner);
+
         const ownerName =
-            owner?.display_name || "Unknown Owner";
+            owner?.metadata?.team_name ||
+            owner?.display_name ||
+            "Unknown Owner";
 
         const card = document.createElement("div");
 
