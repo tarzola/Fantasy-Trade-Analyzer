@@ -31,3 +31,41 @@ async function loadLeagueData() {
         alert("Error loading league.");
     }
 }
+function displayLeagueInfo(league) {
+
+    const leagueInfo = document.getElementById("leagueInfo");
+
+    leagueInfo.innerHTML = `
+        <h2>${league.name}</h2>
+        <p>Season: ${league.season}</p>
+        <p>Teams: ${league.total_rosters}</p>
+    `;
+}
+function displayRosters(rosters, users) {
+
+    const container =
+        document.getElementById("rostersContainer");
+
+    container.innerHTML = "";
+
+    rosters.forEach(roster => {
+
+        const owner = users.find(
+            user => user.user_id === roster.owner_id
+        );
+
+        const ownerName =
+            owner?.display_name || "Unknown Owner";
+
+        const card = document.createElement("div");
+
+        card.classList.add("roster-card");
+
+        card.innerHTML = `
+            <h3>${ownerName}</h3>
+            <p>Players: ${roster.players?.length || 0}</p>
+        `;
+
+        container.appendChild(card);
+    });
+}
