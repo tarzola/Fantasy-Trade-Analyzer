@@ -24,8 +24,8 @@ async function loadLeagueData() {
         const rosters = await rostersResponse.json();
 
         displayLeagueInfo(league);
-        console.log(owner);
         displayRosters(rosters, users);
+        console.log(owner);
 
     } catch (error) {
         console.error(error);
