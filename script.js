@@ -61,6 +61,10 @@ container.innerHTML = "";
 
 rosters.forEach(roster => {
 
+    // DEBUG: inspect the full roster object
+    console.log("ROSTER OBJECT:");
+    console.log(roster);
+
     const owner = users.find(
         user => user.user_id === roster.owner_id
     );
@@ -74,7 +78,6 @@ rosters.forEach(roster => {
 
     card.classList.add("roster-card");
 
-    // Show first 10 player IDs
     const playerList = roster.players
         ? roster.players.slice(0, 10).join("<br>")
         : "No players found";
@@ -94,4 +97,3 @@ rosters.forEach(roster => {
 ```
 
 }
-
