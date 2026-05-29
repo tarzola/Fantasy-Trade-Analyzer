@@ -3,78 +3,95 @@ console.log("script loaded");
 const leagueId = "1242708409250226176";
 
 document
-    .getElementById("loadLeagueBtn")
-    .addEventListener("click", loadLeagueData);
+.getElementById("loadLeagueBtn")
+.addEventListener("click", loadLeagueData);
 
 async function loadLeagueData() {
-    try {
+try {
 
-        const leagueResponse = await fetch(
-            `https://api.sleeper.app/v1/league/${leagueId}`
-        );
+```
+    const leagueResponse = await fetch(
+        `https://api.sleeper.app/v1/league/${leagueId}`
+    );
 
-        const usersResponse = await fetch(
-            `https://api.sleeper.app/v1/league/${leagueId}/users`
-        );
+    const usersResponse = await fetch(
+        `https://api.sleeper.app/v1/league/${leagueId}/users`
+    );
 
-        const rostersResponse = await fetch(
-            `https://api.sleeper.app/v1/league/${leagueId}/rosters`
-        );
+    const rostersResponse = await fetch(
+        `https://api.sleeper.app/v1/league/${leagueId}/rosters`
+    );
 
-        const league = await leagueResponse.json();
-        const users = await usersResponse.json();
-        const rosters = await rostersResponse.json();
+    const league = await leagueResponse.json();
+    const users = await usersResponse.json();
+    const rosters = await rostersResponse.json();
 
-        displayLeagueInfo(league);
-        displayRosters(rosters, users);
+    displayLeagueInfo(league);
+    displayRosters(rosters, users);
 
-    } catch (error) {
-        console.error(error);
-        alert("Error loading league.");
-    }
+} catch (error) {
+    console.error(error);
+    alert("Error loading league.");
+}
+```
+
 }
 
 function displayLeagueInfo(league) {
 
-    const leagueInfo = document.getElementById("leagueInfo");
+```
+const leagueInfo = document.getElementById("leagueInfo");
 
-    leagueInfo.innerHTML = `
-        <h2>${league.name}</h2>
-        <p>Season: ${league.season}</p>
-        <p>Teams: ${league.total_rosters}</p>
-    `;
+leagueInfo.innerHTML = `
+    <h2>${league.name}</h2>
+    <p>Season: ${league.season}</p>
+    <p>Teams: ${league.total_rosters}</p>
+`;
+```
+
 }
 
 function displayRosters(rosters, users) {
 
-    const container =
-        document.getElementById("rostersContainer");
+```
+const container =
+    document.getElementById("rostersContainer");
 
-    container.innerHTML = "";
+container.innerHTML = "";
 
-    rosters.forEach(roster => {
+rosters.forEach(roster => {
 
-        const owner = users.find(
-            user => user.user_id === roster.owner_id
-        );
+    const owner = users.find(
+        user => user.user_id === roster.owner_id
+    );
 
-        // Debug output
-       // console.log(owner);
+    const ownerName =
+        owner?.metadata?.team_name ||
+        owner?.display_name ||
+        "Unknown Owner";
 
-        const ownerName =
-            owner?.metadata?.team_name ||
-            owner?.display_name ||
-            "Unknown Owner";
+    const card = document.createElement("div");
 
-        const card = document.createElement("div");
+    card.classList.add("roster-card");
 
-        card.classList.add("roster-card");
+    // Show first 10 player IDs
+    const playerList = roster.players
+        ? roster.players.slice(0, 10).join("<br>")
+        : "No players found";
 
-        card.innerHTML = `
-            <h3>${ownerName}</h3>
-            <p>Players: ${roster.players?.length || 0}</p>
-        `;
+    card.innerHTML = `
+        <h3>${ownerName}</h3>
+        <p>Players: ${roster.players?.length || 0}</p>
 
-        container.appendChild(card);
-    });
+        <div class="player-list">
+            <strong>First 10 Player IDs:</strong><br>
+            ${playerList}
+        </div>
+    `;
+
+    container.appendChild(card);
+});
+```
+
 }
+
