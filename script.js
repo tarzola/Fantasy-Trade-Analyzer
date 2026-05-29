@@ -40,8 +40,7 @@ try {
     globalPlayers = players;
 
     displayLeagueInfo(league);
-    displayRosters(rosters, users, players);
-
+    
     populateTeamDropdowns();
 
 } catch (error) {
