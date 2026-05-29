@@ -29,7 +29,14 @@ try {
     const playersResponse = await fetch(
         "https://api.sleeper.app/v1/players/nba"
     );
+    const tradedPicksResponse = await fetch(
+    `https://api.sleeper.app/v1/league/${leagueId}/traded_picks`
+);
 
+const tradedPicks = await tradedPicksResponse.json();
+
+console.log("TRADED PICKS");
+console.log(tradedPicks);
     const league = await leagueResponse.json();
     const users = await usersResponse.json();
     const rosters = await rostersResponse.json();
