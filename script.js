@@ -11,7 +11,7 @@ try {
 
 ```
     const leagueResponse = await fetch(
-        `https://api.sleeper.app/v1/league/${leagueId}`
+        'https://api.sleeper.app/v1/league/${leagueId}'
     );
 
     const usersResponse = await fetch(
