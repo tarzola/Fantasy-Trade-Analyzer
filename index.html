@@ -1,59 +1,57 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynasty Trade Analyzer</title>
+<link rel="stylesheet" href="style.css">
+<header>
+    <h1>Dynasty Trade Analyzer</h1>
+    <p>NBA Dynasty League Trade Calculator</p>
+</header>
 
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
+<main>
 
-    <header>
-        <h1>Dynasty Trade Analyzer</h1>
-        <p>NBA Dynasty League Trade Calculator</p>
-    </header>
+    <section class="controls">
+        <button id="loadLeagueBtn">
+            Load League Data
+        </button>
+    </section>
 
-    <main>
+    <section id="leagueInfo"></section>
 
-        <section class="controls">
-            <button id="loadLeagueBtn">
-                Load League Data
-            </button>
-        </section>
+    <section id="tradeAnalyzer">
 
-        <section id="leagueInfo"></section>
-        <section id="tradeAnalyzer">
-        
-            <h2>Trade Analyzer</h2>
-        
-            <div class="team-selection">
-        
-                <div class="team-box">
-                    <h3>Team A</h3>
-                    <select id="teamASelect">
-                        <option value="">Select Team</option>
-                    </select>
-        
-                    <div id="teamARoster"></div>
-                </div>
-        
-                <div class="team-box">
-                    <h3>Team B</h3>
-                    <select id="teamBSelect">
-                        <option value="">Select Team</option>
-                    </select>
-        
-                    <div id="teamBRoster"></div>
-                </div>
-        
+        <h2>Trade Analyzer</h2>
+
+        <div class="team-selection">
+
+            <div class="team-box">
+                <h3>Team A</h3>
+
+                <select id="teamASelect">
+                    <option value="">Select Team</option>
+                </select>
+
+                <div id="teamARoster"></div>
             </div>
-        
-        </section>
-        <section id="rostersContainer"></section>
 
-    </main>
+            <div class="team-box">
+                <h3>Team B</h3>
 
-    <script src="script.js"></script>
-</body>
-</html>
+                <select id="teamBSelect">
+                    <option value="">Select Team</option>
+                </select>
+
+                <div id="teamBRoster"></div>
+            </div>
+
+        </div>
+
+        <button id="analyzeTradeBtn">
+            Analyze Trade
+        </button>
+
+        <div id="tradeResults"></div>
+
+    </section>
+
+    <section id="rostersContainer"></section>
+
+</main>
+
+<script src="script.js"></script>
