@@ -47,4 +47,28 @@ margin-top: 10px;
 font-size: 14px;
 line-height: 1.5;
 }
+#tradeAnalyzer {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
 
+.team-selection {
+    display: flex;
+    gap: 20px;
+}
+
+.team-box {
+    flex: 1;
+}
+
+.team-box select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+}
+
+.player-checkbox {
+    margin-bottom: 5px;
+}
