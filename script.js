@@ -21,12 +21,18 @@ try {
         `https://api.sleeper.app/v1/league/${leagueId}/rosters`
     );
 
+    // Load Sleeper NBA player database
+    const playersResponse = await fetch(
+        "https://api.sleeper.app/v1/players/nba"
+    );
+
     const league = await leagueResponse.json();
     const users = await usersResponse.json();
     const rosters = await rostersResponse.json();
+    const players = await playersResponse.json();
 
     displayLeagueInfo(league);
-    displayRosters(rosters, users);
+    displayRosters(rosters, users, players);
 
 } catch (error) {
     console.error(error);
@@ -47,16 +53,13 @@ leagueInfo.innerHTML = `
 
 }
 
-function displayRosters(rosters, users) {
+function displayRosters(rosters, users, players) {
 
 const container = document.getElementById("rostersContainer");
 
 container.innerHTML = "";
 
 rosters.forEach(roster => {
-
-    console.log("ROSTER OBJECT:");
-    console.log(roster);
 
     const owner = users.find(
         user => user.user_id === roster.owner_id
@@ -71,17 +74,30 @@ rosters.forEach(roster => {
 
     card.classList.add("roster-card");
 
-    const playerList = roster.players
-        ? roster.players.slice(0, 10).join("<br>")
-        : "No players found";
+    let playerNames = "";
+
+    if (roster.players) {
+
+        roster.players.slice(0, 10).forEach(playerId => {
+
+            const player = players[playerId];
+
+            const playerName =
+                player?.full_name ||
+                `Unknown (${playerId})`;
+
+            playerNames += `${playerName}<br>`;
+        });
+
+    }
 
     card.innerHTML = `
         <h3>${ownerName}</h3>
         <p>Players: ${roster.players?.length || 0}</p>
 
         <div class="player-list">
-            <strong>First 10 Player IDs:</strong><br>
-            ${playerList}
+            <strong>First 10 Players:</strong><br>
+            ${playerNames}
         </div>
     `;
 
