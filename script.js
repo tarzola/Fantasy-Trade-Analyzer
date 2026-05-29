@@ -66,8 +66,11 @@ function displayLeagueInfo(league) {
 
 const leagueInfo = document.getElementById("leagueInfo");
 
-leagueInfo.innerHTML = <h2>${league.name}</h2> <p>Season: ${league.season}</p> <p>Teams: ${league.total_rosters}</p>;
-
+leagueInfo.innerHTML = `
+    <h2>${league.name}</h2>
+    <p>Season: ${league.season}</p>
+    <p>Teams: ${league.total_rosters}</p>
+`;
 }
 
 function populateTeamDropdowns() {
@@ -76,10 +79,10 @@ const teamASelect = document.getElementById("teamASelect");
 const teamBSelect = document.getElementById("teamBSelect");
 
 teamASelect.innerHTML =
-'Select Team';
+    '<option value="">Select Team</option>';
 
 teamBSelect.innerHTML =
-'Select Team';
+    '<option value="">Select Team</option>';
 
 globalRosters.forEach(roster => {
 
@@ -143,7 +146,7 @@ return;
 
 }
 
-let html = "Players";
+let html = "<h4>Players</h4>";
 
 roster.players.forEach(playerId => {
 
@@ -168,8 +171,8 @@ html += `
 
 });
 
-html += "";
-html += "Draft Picks";
+html += "<hr>";
+html += "<h4>Draft Picks</h4>";
 
 const rosterPicks = [];
 
@@ -252,10 +255,10 @@ targetDiv.innerHTML = html;
 function analyzeTrade() {
 
 const teamAAssets =
-document.querySelectorAll(".teamA-asset");
+document.querySelectorAll(".teamA-asset:checked");
 
 const teamBAssets =
-document.querySelectorAll(".teamB-asset");
+document.querySelectorAll(".teamB-asset:checked");
 
 let teamAList = "";
 let teamBList = "";
@@ -273,7 +276,7 @@ teamBList += `<li>${asset.value}</li>`;
 });
 
 document.getElementById("tradeResults").innerHTML = `
-Trade Summary
+    <h3>Trade Summary</h3>
 
 <div style="display:flex; gap:40px;">
 
