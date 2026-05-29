@@ -42,3 +42,9 @@ button {
 .roster-card h3 {
     margin-top: 0;
 }
+.player-list {
+margin-top: 10px;
+font-size: 14px;
+line-height: 1.5;
+}
+
